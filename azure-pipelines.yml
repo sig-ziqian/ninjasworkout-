@@ -1,0 +1,42 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: coverity
+  
+steps:
+- task: SynopsysSecurityScan@1.6.0
+  displayName: 'Coverity Full Scan'
+  condition: not(eq(variables['Build.Reason'], 'PullRequest'))
+  inputs:
+    BRIDGE_COVERITY_CONNECT_URL: $(COVERITY_URL)
+    BRIDGE_COVERITY_CONNECT_USER_NAME: $(COVERITY_USER)
+    BRIDGE_COVERITY_CONNECT_USER_PASSWORD: $(COVERITY_PASSPHRASE)
+    BRIDGE_COVERITY_CONNECT_PROJECT_NAME: $(Build.Repository.Name)
+    BRIDGE_COVERITY_CONNECT_STREAM_NAME: $(Build.Repository.Name)-$(Build.SourceBranchName)
+    BRIDGE_COVERITY_CONNECT_POLICY_VIEW: 'Outstanding Issues'
+    ### Uncomment below configuration if Synopsys Bridge diagnostic files needs to be uploaded
+    # include_diagnostics: true
+
+- task: SynopsysSecurityScan@1.3.2
+  displayName: 'Coverity PR Scan'
+  condition: eq(variables['Build.Reason'], 'PullRequest')
+  inputs:
+    BRIDGE_COVERITY_CONNECT_URL: $(COVERITY_URL)
+    BRIDGE_COVERITY_CONNECT_USER_NAME: $(COVERITY_USER)
+    BRIDGE_COVERITY_CONNECT_USER_PASSWORD: $(COVERITY_PASSPHRASE)
+    BRIDGE_COVERITY_CONNECT_PROJECT_NAME: $(Build.Repository.Name)
+    BRIDGE_COVERITY_CONNECT_STREAM_NAME: $(Build.Repository.Name)-$(Build.targetBranchName)
+    ### Below configuration is used to enable feedback from Coverity security testing as pull request comment
+    BRIDGE_COVERITY_AUTOMATION_PRCOMMENT: true
+    AZURE_TOKEN: $(System.AccessToken) # Mandatory when BRIDGE_COVERITY_AUTOMATION_PRCOMMENT is set to 'true'
+    ### Uncomment below configuration if Synopsys Bridge diagnostic files needs to be uploaded
+    # include_diagnostics: true
