@@ -35,7 +35,7 @@ steps:
     BRIDGE_COVERITY_CONNECT_USER_NAME: $(COVERITY_USER)
     BRIDGE_COVERITY_CONNECT_USER_PASSWORD: $(COVERITY_PASSPHRASE)
     BRIDGE_COVERITY_CONNECT_PROJECT_NAME: $(Build.Repository.Name)
-    BRIDGE_COVERITY_CONNECT_STREAM_NAME: $(Build.Repository.Name)-$(Build.SourceBranchName)
+    BRIDGE_COVERITY_CONNECT_STREAM_NAME: $(Build.Repository.Name)-$(System.PullRequest.targetBranchName)
     ### Below configuration is used to enable feedback from Coverity security testing as pull request comment
     BRIDGE_COVERITY_AUTOMATION_PRCOMMENT: true
     AZURE_TOKEN: $(System.AccessToken) # Mandatory when BRIDGE_COVERITY_AUTOMATION_PRCOMMENT is set to 'true'
