@@ -30,6 +30,7 @@ steps:
   displayName: 'Coverity PR Scan'
   condition: eq(variables['Build.Reason'], 'PullRequest')
   inputs:
+    SYNOPSYS_BRIDGE_INSTALL_DIRECTORY: "/Users/ziqian/Develop/release-packages/synopsys-bridge"
     BRIDGE_COVERITY_CONNECT_URL: $(COVERITY_URL)
     BRIDGE_COVERITY_CONNECT_USER_NAME: $(COVERITY_USER)
     BRIDGE_COVERITY_CONNECT_USER_PASSWORD: $(COVERITY_PASSPHRASE)
@@ -39,4 +40,4 @@ steps:
     BRIDGE_COVERITY_AUTOMATION_PRCOMMENT: true
     AZURE_TOKEN: $(System.AccessToken) # Mandatory when BRIDGE_COVERITY_AUTOMATION_PRCOMMENT is set to 'true'
     ### Uncomment below configuration if Synopsys Bridge diagnostic files needs to be uploaded
-    # include_diagnostics: true
+    include_diagnostics: true
