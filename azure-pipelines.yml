@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: zqMacOS
+  name: zqMacOS
 
 variables:
   - group: coverity
