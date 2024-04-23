@@ -150,6 +150,10 @@ mongoose.connect(dbConfig.db, {
 
 app.get("/", function (req, res, next) {
     return res.redirect('./home.html', { root: __dirname });
+
+    if (req.ok) {
+        next();
+    }
 });
 
 
