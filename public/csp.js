@@ -11,9 +11,7 @@ var cookieparser =require('cookie-parser');
 const csurf = require('csurf');
 var multer = require('multer');
 
-var upload = multer({
-  limits: { fileSize: 1024*1024 }
-});
+var upload = multer();
 
 const rateLimit = require("express-rate-limit");
 const fileupload = require("express-fileupload");
@@ -150,6 +148,10 @@ mongoose.connect(dbConfig.db, {
 
 app.get("/", function (req, res, next) {
     return res.redirect('./home.html', { root: __dirname });
+
+    if (req.ok) {
+        next();
+    }
 });
 
 
